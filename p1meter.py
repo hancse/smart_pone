@@ -18,7 +18,6 @@ class P1Results:
     GeneratedPower: np.zeros(1)
     UsedGas: np.zeros(1)
 
-
 class P1Meter(QObject):
 
     measRead = pyqtSignal(list)
@@ -61,24 +60,37 @@ class P1Meter(QObject):
             self.serial.close()
 
     def parseP1(self, p1data):
-        print(p1data)
-        if p1data.contains("1-0:1.8.1"):
-            self.results.UsedEnergy1 = p1data[10:15]
-        elif p1data.contains("1-0:1.8.2"):
-            self.results.UsedEnergy2 = p1data[10:15]
-        elif (p1data.contains("1-0:2.8.1")):
-            self.results.GeneratedEnergy1 = p1data[10:15]
-        elif (p1data.contains("1-0:2.8.2")):
-            self.results.GeneratedEnergy2 = p1data[10:15]
+        # Store the vaules in a dictionary:
+        tel_code_val = dict()
+        for line in self.telegram:
+            if re.match('\d', line):    # line starts with a number
+                # print(line)
+                obis_code, value_unit = self.split_obis(line)
+                tel_code_val[obis_code] = value_unit
 
-        elif (p1data.contains("1-0:1.7.0")):
-            self.results.UsedPower = p1data[10:15]
-        elif (p1data.contains("1-0:2.7.0")):
-            self.results.GeneratedPower = p1data[10:15]
-        elif (p1data.contains("0-1:24.3.0")):
-            self.results.UsedGas = p1data[10:15]
+
+        self.results.UsedEnergy1 = tel_code_val["1-0:1.8.1"]
+        self.results.UsedEnergy2 = tel_code_val["1-0:1.8.2"]
+        self.results.GeneratedEnergy1 = tel_code_val["1-0:2.8.1"]
+        self.results.GeneratedEnergy2 = tel_code_val["1-0:2.8.2"]
+        self.results.UsedPower = tel_code_val["1-0:1.7.0"]
+        self.results.GeneratedPower = tel_code_val["1-0:2.7.0"]
+        self.results.UsedGas = tel_code_val["0-1:24.2.1"]
 
         self.measRead.emit()
+
+
+
+# https://stackoverflow.com/questions/4894069/regular-expression-to-return-text-between-parenthesis
+# https://stackoverflow.com/questions/50799964/extract-specific-pattern-from-text-python-3?noredirect=1&lq=1
+# https://stackoverflow.com/questions/8040795/how-can-i-get-a-value-thats-inside-parentheses-in-a-string-in-python?noredirect=1&lq=1
+
+    def split_obis(self, s: str):
+        left = s.find("(")
+        right = s.find(")")
+        code = s[:left-1]
+        value = s[left+1:right]
+        return code, value
 
     def handleError(self, error):
         if error == QSerialPort.ResourceError:

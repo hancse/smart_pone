@@ -72,13 +72,8 @@ class P1Frame(QFrame):
         self.cmdAvailable.connect(self.meter.writeData)
         # self.p1Timer.timeout.connect(on_btnWeigh_clicked()));
 
-        print(os.name)
-        os_info = os.uname()
-        print(os_info)
         print(sys.platform)
-        print(platform.python_version())
-        print(platform.uname())
-
+        # print(platform.uname())  # alternative
         if sys.platform == 'linux':
             self.portName = "/dev/ttyUSB0"
         elif sys.platform == "win32":
@@ -86,7 +81,6 @@ class P1Frame(QFrame):
 
     def initUI(self):
         self.setGeometry(300, 300, 400, 300)
-
 
 
     def displayMeas(self, strList):
