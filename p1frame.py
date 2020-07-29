@@ -63,7 +63,7 @@ class P1Frame(QFrame):
         connectLayout.addWidget(self.btnConfig)
 
         self.pte = QPlainTextEdit()
-        self.pte.setMinimumSize(300, 360)
+        self.pte.setMinimumSize(300, 420)
         mainLayout.addWidget(self.pte)
 
         self.p1Timer.setInterval(1000)

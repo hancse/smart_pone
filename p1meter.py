@@ -59,25 +59,25 @@ class P1Meter(QObject):
         if self.serial.isOpen():
             self.serial.close()
 
-    def parseP1(self, p1data):
+    def parseP1(self):
         # Store the vaules in a dictionary:
         tel_code_val = dict()
         for line in self.telegram:
             if re.match('\d', line):    # line starts with a number
-                # print(line)
+                print(line)
                 obis_code, value_unit = self.split_obis(line)
                 tel_code_val[obis_code] = value_unit
 
 
-        self.results.UsedEnergy1 = tel_code_val["1-0:1.8.1"]
-        self.results.UsedEnergy2 = tel_code_val["1-0:1.8.2"]
-        self.results.GeneratedEnergy1 = tel_code_val["1-0:2.8.1"]
-        self.results.GeneratedEnergy2 = tel_code_val["1-0:2.8.2"]
-        self.results.UsedPower = tel_code_val["1-0:1.7.0"]
-        self.results.GeneratedPower = tel_code_val["1-0:2.7.0"]
-        self.results.UsedGas = tel_code_val["0-1:24.2.1"]
+        # self.results.UsedEnergy1 = tel_code_val["1-0:1.8.1"]
+        # self.results.UsedEnergy2 = tel_code_val["1-0:1.8.2"]
+        # self.results.GeneratedEnergy1 = tel_code_val["1-0:2.8.1"]
+        # self.results.GeneratedEnergy2 = tel_code_val["1-0:2.8.2"]
+        # self.results.UsedPower = tel_code_val["1-0:1.7.0"]
+        # self.results.GeneratedPower = tel_code_val["1-0:2.7.0"]
+        # self.results.UsedGas = tel_code_val["0-1:24.2.1"]
 
-        self.measRead.emit()
+        # self.measRead.emit()
 
 
 
@@ -124,6 +124,7 @@ class P1Meter(QObject):
                     # self.parseP1(line)
                 # print("--------------------------------------")
                 self.measRead.emit(self.telegram)
+                self.parseP1()
 
 # https://forum.qt.io/topic/85064/qbytearray-to-string
 
