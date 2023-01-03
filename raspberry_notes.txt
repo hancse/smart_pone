@@ -1,0 +1,14 @@
+cd ~
+mkdir Projects
+cd Projects
+git clone https://github.com/hancse/smart_pone smart_pone-git
+
+Open p1frame.py with Tonny
+
+Install packages in Tonny:
+fontawesome
+qtawesome
+
+sudo apt install python3-pyqt5.qtserialport in bash (Tonny doesn't know this package)
+
+run .\p1frame.py

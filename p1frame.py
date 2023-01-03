@@ -27,9 +27,11 @@ class P1Frame(QFrame):
         self.lastCmd = ""
         self.meter = P1Meter(self)
         self.p1Timer = QTimer(self)
+        self.interval = 2000
         # self.sd = SerialDialog(self)
 
         self.initUI()
+        self.setWindowTitle('Smart P1')
 
         mainLayout = QVBoxLayout()
         self.setLayout(mainLayout)
@@ -63,10 +65,10 @@ class P1Frame(QFrame):
         connectLayout.addWidget(self.btnConfig)
 
         self.pte = QPlainTextEdit()
-        self.pte.setMinimumSize(300, 420)
+        self.pte.setMinimumSize(500, 700)
         mainLayout.addWidget(self.pte)
 
-        self.p1Timer.setInterval(1000)
+        self.p1Timer.setInterval(self.interval)
 
         self.meter.measRead.connect(self.displayMeas)
         self.cmdAvailable.connect(self.meter.writeData)
