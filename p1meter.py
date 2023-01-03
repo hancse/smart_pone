@@ -68,7 +68,7 @@ class P1Meter(QObject):
                 obis_code, value_unit = self.split_obis(line)
                 tel_code_val[obis_code] = value_unit
 
-
+        print(tel_code_val)
         # self.results.UsedEnergy1 = tel_code_val["1-0:1.8.1"]
         # self.results.UsedEnergy2 = tel_code_val["1-0:1.8.2"]
         # self.results.GeneratedEnergy1 = tel_code_val["1-0:2.8.1"]
